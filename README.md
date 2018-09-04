@@ -11,5 +11,6 @@ GoTube is a video sharing app built with React and Ruby on Rails. It fetches You
 
 
 ## ERD
-IMG_20180904_105735.jpg
+![alt text](IMG_20180904_105735.jpg)
+
 
