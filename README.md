@@ -4,6 +4,12 @@ GoTube is a video sharing app built with React and Ruby on Rails. It fetches You
 
 ## Mockups
 
+
+
+
+
+
+
 https://photos.google.com/share/AF1QipM3OKwHFH22ZSu9IOvmOx2cbS9eD8GD6rEC3AJPkE5XqjD3OEwmYc5AuwsAhTklEQ/photo/AF1QipPkxNUfBmytl5uNASwzOu4JLSgrMosCTkLoIDOx?key=OFlXdlJqOXlUa1ZWb2ZsdUN3X1BUODkwcngwQ013
 
 https://photos.google.com/share/AF1QipM3OKwHFH22ZSu9IOvmOx2cbS9eD8GD6rEC3AJPkE5XqjD3OEwmYc5AuwsAhTklEQ/photo/AF1QipOnYTRM54RTGufRuOKW9tp_9GeMbtZw5bhQKMsn?key=OFlXdlJqOXlUa1ZWb2ZsdUN3X1BUODkwcngwQ013
