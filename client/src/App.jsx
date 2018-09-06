@@ -1,18 +1,33 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Videos from './Videos'
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      videos: []
+    }
+  }
+
+  baseUrl = 'https://www.googleapis.com/youtube/v3/';
+  apiKey = 'AIzaSyAGcWYpi2iRMuMI4dRyyrtz7vXwEc_qYwc';
+
+  componentDidMount() {
+    fetch(this.baseUrl + 'search?q=apple&part=snippet&maxResults=50&type=video&key=' + this.apiKey)
+    .then(results => {
+      return results.json();
+    }).then(videos => {
+      console.log(videos)
+      this.setState({
+        videos: videos.items
+      })
+    })
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <Videos videos={this.state.videos} />
       </div>
     );
   }
