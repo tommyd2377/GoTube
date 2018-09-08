@@ -6,7 +6,7 @@ export default function Videos(props) {
       return (
         <div>
           <br/>
-            <div key={video.id.videoId}>
+            <div key={video.id.videoId} onClick={() => props.fetchOneVideo(video.id.videoId)}>
               <p>{video.snippet.title}</p>
               <img src={video.snippet.thumbnails.high.url} />
             </div>

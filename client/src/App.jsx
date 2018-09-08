@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
-import Search from './Search';
+import Root from './Root';
 import './App.css';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      videos: [],
-    }
-  }
+export default class App extends Component {
   
   render() {
     return (
       <div className="App">
-      <h1>GoTube</h1>
-      <br/>
-      <Search />
+        <h1>GoTube</h1>
+        <Root />
       </div>
     );
   }
 }
-
-export default App;

@@ -1,19 +1,34 @@
 import React from 'react';
 import Videos from './Videos';
+import VideoDetail from './VideoDetail';
+import {
+    fetchVideo
+  } from './servcies/api';
 
-export default class Search extends React.Component {
+export default class Root extends React.Component {
     
     constructor(props) {
         super(props);
         this.state = {
             videos: [],
-            query: ' '
+            currentView: 'Search',
+            query: ' ',
+            video: {}
         }
-
+        this.fetchOneVideo = this.fetchOneVideo.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
-    
+    fetchOneVideo(vid) {
+        fetchVideo(vid)
+        .then(video => {
+            this.setState({
+                video,
+                currentView: 'Detail'
+              });
+        })
+    }
+
     handleChange(event) {
         this.setState({query: event.target.value});
         console.log(this.state.query)
@@ -32,10 +47,19 @@ export default class Search extends React.Component {
       baseUrl = 'https://www.googleapis.com/youtube/v3/';
       apiKey = 'AIzaSyAGcWYpi2iRMuMI4dRyyrtz7vXwEc_qYwc';  
 
-     
-
-      render() {
-        return (
+      determineWhichToRender() {
+        const { currentView } = this.state;
+        const { video, videos } = this.state;
+    
+        switch (currentView) {
+          case 'Detail':
+            return <div>
+              <VideoDetail video={video} />
+            </div>
+    
+            break;
+          case 'Search':
+          return (
             <div>
                 <form>
                     <label>
@@ -44,9 +68,25 @@ export default class Search extends React.Component {
                         <br/>
                     </label>
                 </form>
-                <Videos videos={this.state.videos} />
+                <Videos videos={videos} fetchOneVideo={this.fetchOneVideo} />
             </div>
           )
+            break;
+        }
+    }
+
+      render() {
+
+        const links = [
+          'Search',
+          'Detail',
+        ];
+        return (
+          <div>
+            {this.determineWhichToRender()}
+          </div>
+        );
       }
+    }
     
-  }
+    
