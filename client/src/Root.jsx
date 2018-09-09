@@ -1,9 +1,11 @@
 import React from 'react';
 import Videos from './Videos';
 import VideoDetail from './VideoDetail';
-import {
-    fetchVideo
-  } from './servcies/api';
+import NewsFeed from './NewsFeed';
+import NavBar from './NavBar';
+import Users from './Users';
+import Profile from './Profile';
+import { fetchVideo } from './servcies/api';
 
 export default class Root extends React.Component {
     
@@ -17,6 +19,10 @@ export default class Root extends React.Component {
         }
         this.fetchOneVideo = this.fetchOneVideo.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.goToNewsFeed = this.goToNewsFeed.bind(this);
+        this.goToVideos = this.goToVideos.bind(this);
+        this.goToUsers = this.goToUsers.bind(this);
+        this.goToProfile = this.goToProfile.bind(this);
     }
 
     fetchOneVideo(vid) {
@@ -27,6 +33,30 @@ export default class Root extends React.Component {
                 currentView: 'Detail'
               });
         })
+    }
+
+    goToNewsFeed() {
+      this.setState({
+        currentView: 'NewsFeed'
+      })
+    }
+
+    goToVideos() {
+      this.setState({
+        currentView: 'Search'
+      })
+    }
+
+    goToUsers() {
+      this.setState({
+        currentView: 'Users'
+      })
+    }
+
+    goToProfile() {
+      this.setState({
+        currentView: 'Profile'
+      })
     }
 
     handleChange(event) {
@@ -54,13 +84,40 @@ export default class Root extends React.Component {
         switch (currentView) {
           case 'Detail':
             return <div>
-              <VideoDetail video={video} />
-            </div>
+                    <NavBar goToNewsFeed={this.goToNewsFeed} goToVideos={this.goToVideos} goToUsers={this.goToUsers} goToProfile={this.goToProfile} />
+                    <VideoDetail video={video} />
+                  </div>
+    
+            break;
+
+            case 'NewsFeed':
+            return <div>
+                    <NavBar goToNewsFeed={this.goToNewsFeed} goToVideos={this.goToVideos} goToUsers={this.goToUsers} goToProfile={this.goToProfile} />
+                    <NewsFeed />
+                  </div>
+    
+            break;
+
+            case 'Users':
+            return <div>
+                    <NavBar goToNewsFeed={this.goToNewsFeed} goToVideos={this.goToVideos} goToUsers={this.goToUsers} goToProfile={this.goToProfile} />
+                    <Users />
+                  </div>
+    
+            break;
+
+            case 'Profile':
+            return <div>
+                    <NavBar goToNewsFeed={this.goToNewsFeed} goToVideos={this.goToVideos} goToUsers={this.goToUsers} goToProfile={this.goToProfile} />
+                    <Profile />
+                  </div>
     
             break;
           case 'Search':
           return (
             <div>
+              <NavBar goToNewsFeed={this.goToNewsFeed} goToVideos={this.goToVideos} goToUsers={this.goToUsers} goToProfile={this.goToProfile} />
+              <br/>
                 <form>
                     <label>
                         Search YouTube:
@@ -80,6 +137,9 @@ export default class Root extends React.Component {
         const links = [
           'Search',
           'Detail',
+          'NewsFeed',
+          'Users',
+          'Profile'
         ];
         return (
           <div>
