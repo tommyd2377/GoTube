@@ -15,6 +15,7 @@ export default class Root extends React.Component {
         super(props);
         this.state = {
             videos: [],
+            video: {},
             currentView: 'Login',
             isLoggedIn: null,
             query: '',
@@ -22,7 +23,7 @@ export default class Root extends React.Component {
             fullname: '',
             username: '',
             password: '',
-            video: {}
+            id: ''
         }
         this.fetchOneVideo = this.fetchOneVideo.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -86,7 +87,13 @@ export default class Root extends React.Component {
         res.json()
     )
       .then(res => {
-        console.log(res)
+        console.log(res);
+        this.setState({
+          fullname: res.fullname,
+          username: res.username,
+          id: res.id
+        })
+        this.login();
       })
       .catch(err => err.message)
     }
@@ -101,7 +108,10 @@ export default class Root extends React.Component {
                      }
       fetch(url, init)
       .then(res => res.json())
-      .then(res => localStorage.setItem("jwt", res.jwt))
+      .then(res => {
+        localStorage.setItem("jwt", res.jwt);
+        console.log(res)
+      })
       .then(() => this.setState({
         isLoggedIn: true,
         currentView: 'NewsFeed'
