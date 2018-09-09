@@ -6,6 +6,7 @@ export default function Profile(props) {
       
         <div>
           <p>Profile</p>
+          <button onClick={() => props.logout()}>Log Out</button>
         </div>
       
     

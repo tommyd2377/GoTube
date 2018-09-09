@@ -17,9 +17,10 @@ export default class Root extends React.Component {
             videos: [],
             currentView: 'Login',
             isLoggedIn: null,
-            isRegister: false,
             query: '',
             email: '',
+            fullname: '',
+            username: '',
             password: '',
             video: {}
         }
@@ -34,23 +35,18 @@ export default class Root extends React.Component {
         this.login = this.login.bind(this);
         this.isLoggedIn = this.isLoggedIn.bind(this);
         this.register = this.register.bind(this);
-        this.showRegisterForm = this.showRegisterForm.bind(this);
+        this.like = this.like.bind(this);
     }
 
     fetchOneVideo(vid) {
         fetchVideo(vid)
         .then(video => {
+          console.log(video)
             this.setState({
                 video,
                 currentView: 'Detail'
               });
         })
-    }
-
-    showRegisterForm() {
-      this.setState({
-        isRegister: true,
-      })
     }
 
     handleLoginChange(e) {
@@ -65,6 +61,7 @@ export default class Root extends React.Component {
        isLoggedIn: false,
        name:"",
        email:"",
+       currentView: 'Login'
       })
     }
 
@@ -78,17 +75,19 @@ export default class Root extends React.Component {
   
     register() {
       const url = `${BASE_URL}/users`
-      const body = {"user": {"email": this.state.email, "password":this.state.password}}
+      const body = {"user": {"email": this.state.email, "password":this.state.password, "fullname":this.state.fullname, "username":this.state.username}}
       const init = { method: 'POST',
                      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
                      mode: 'cors',
                      body:JSON.stringify(body)
                    }
       fetch(url, init)
-      .then(res => res.json())
-      .then(this.setState({
-        isRegister: false,
-      }))
+      .then(res => 
+        res.json()
+    )
+      .then(res => {
+        console.log(res)
+      })
       .catch(err => err.message)
     }
     
@@ -105,8 +104,13 @@ export default class Root extends React.Component {
       .then(res => localStorage.setItem("jwt", res.jwt))
       .then(() => this.setState({
         isLoggedIn: true,
+        currentView: 'NewsFeed'
       }))
       .catch(err => console.log(err))
+    }
+
+    like() {
+
     }
 
     goToNewsFeed() {
@@ -135,7 +139,6 @@ export default class Root extends React.Component {
 
     handleChange(event) {
         this.setState({query: event.target.value});
-        console.log(this.state.query)
         fetch(this.baseUrl + 'search?q=' + this.state.query + '&part=snippet&maxResults=50&type=video&key=' + this.apiKey)
         .then(results => {
           return results.json();
@@ -159,7 +162,7 @@ export default class Root extends React.Component {
           case 'Detail':
             return <div>
                     <NavBar goToNewsFeed={this.goToNewsFeed} goToVideos={this.goToVideos} goToUsers={this.goToUsers} goToProfile={this.goToProfile} />
-                    <VideoDetail video={video} />
+                    <VideoDetail video={video} like={this.like} />
                   </div>
     
             break;
@@ -168,7 +171,6 @@ export default class Root extends React.Component {
             return <div>
                     <Login handleLoginChange={this.handleLoginChange}
                         login={this.login}
-                        logout={this.logout}
                         email={this.state.email}
                         password={this.state.password}
                         isRegister={this.state.isRegister}
@@ -197,7 +199,7 @@ export default class Root extends React.Component {
             case 'Profile':
             return <div>
                     <NavBar goToNewsFeed={this.goToNewsFeed} goToVideos={this.goToVideos} goToUsers={this.goToUsers} goToProfile={this.goToProfile} />
-                    <Profile />
+                    <Profile logout={this.logout} />
                   </div>
     
             break;

@@ -12,6 +12,22 @@ export default function Login(props) {
             type="email"
           />
           <br /><br />
+          <label htmlFor="fullname">FullName: </label>
+          <br />
+          <input
+            name="fullname"
+            onChange={props.handleLoginChange}
+            type="text"
+          />
+          <br /><br />
+          <label htmlFor="username">Username: </label>
+          <br />
+          <input
+            name="username"
+            onChange={props.handleLoginChange}
+            type="text"
+          />
+          <br /><br />
           <label htmlFor="password">Password:</label>
           <br />
           <input
