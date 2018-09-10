@@ -3,7 +3,12 @@ import React from 'react';
 export default function Login(props) {
   return (
     <div className="login-form">
-    <form>
+    <br/>
+      <h2>Welcome to GoTube.</h2>
+      <h3>GoTube is the number one place to share and discover new YouTube videos.</h3>
+      <h4>Sign Up or Log In below:</h4>
+      <br/>
+      <form>
           <label htmlFor="email">Email: </label>
           <br />
           <input
@@ -37,7 +42,7 @@ export default function Login(props) {
           />
           </form>
           <br />
-          <button onClick={() => props.register()}>Register</button> | <button onClick={() => props.login()}>Login</button>
+          <button onClick={() => props.register()}>Sign Up</button> | <button onClick={() => props.login()}>Sign In</button>
           </div>
     )
 }

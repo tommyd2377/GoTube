@@ -16,6 +16,8 @@ export default class Root extends React.Component {
         this.state = {
             videos: [],
             video: {},
+            likes: [],
+            users: [],
             currentView: 'Login',
             isLoggedIn: null,
             query: '',
@@ -55,7 +57,7 @@ export default class Root extends React.Component {
         [e.target.name]:e.target.value
       })
     }
-  
+  //you felt ready to stop last night
     logout() {
       localStorage.removeItem("jwt")
       this.setState({
@@ -73,7 +75,7 @@ export default class Root extends React.Component {
       })
       return res;
     }
-  
+  //you felt ready to stop last night
     register() {
       const url = `${BASE_URL}/users`
       const body = {"user": {"email": this.state.email, "password":this.state.password, "fullname":this.state.fullname, "username":this.state.username}}
@@ -97,7 +99,7 @@ export default class Root extends React.Component {
       })
       .catch(err => err.message)
     }
-    
+   //you felt ready to stop last night
     login() {
       const url = `${BASE_URL}/user_token`;
       const body = {"auth": {"email": this.state.email, "password": this.state.password} }
@@ -118,15 +120,60 @@ export default class Root extends React.Component {
       }))
       .catch(err => console.log(err))
     }
-
+    //you felt ready to stop last night
     like() {
+      const url = `${BASE_URL}/likes`;
+      const body = {"like": {"uid": this.state.uid, "username": this.state.username, "vid": this.state.vid, "channel_title": this.state.channel_title, "title": this.state.title, "thumbnail": this.state.thumbnail, "description": this.state.description} }
+      const init = { method: 'POST',
+                     headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                     mode: 'cors',
+                     body:JSON.stringify(body),
+                     }
+      fetch(url, init)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+      })
+      .then(() => this.setState({
+      }))
+      .catch(err => console.log(err))
+    }
 
+    follow() {
+      const url = `${BASE_URL}/follows`;
+      const body = {"follow": {"follower_uid": this.state.follower_uid, "follower_username": this.state.follower_username, "followee_uid": this.state.followee_uid, "followee_username": this.state.followee_username} }
+      const init = { method: 'POST',
+                     headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                     mode: 'cors',
+                     body:JSON.stringify(body),
+                     }
+      fetch(url, init)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+      })
+      .then(() => this.setState({
+      }))
+      .catch(err => console.log(err))
     }
 
     goToNewsFeed() {
-      this.setState({
-        currentView: 'NewsFeed'
+      const url = `${BASE_URL}/likes`;
+      const init = { method: 'GET',
+                     headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                     mode: 'cors',
+                    
+                     }
+      fetch(url, init)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+        this.setState({
+          currentView: 'NewsFeed',
+          likes: res
+        })
       })
+      .catch(err => console.log(err))
     }
 
     goToVideos() {
@@ -136,9 +183,22 @@ export default class Root extends React.Component {
     }
 
     goToUsers() {
-      this.setState({
-        currentView: 'Users'
+      const url = `${BASE_URL}/users`;
+      const init = { method: 'GET',
+                     headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                     mode: 'cors',
+                    
+                     }
+      fetch(url, init)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+        this.setState({
+          currentView: 'Users',
+          users: res
+        })
       })
+      .catch(err => console.log(err))
     }
 
     goToProfile() {
@@ -166,7 +226,7 @@ export default class Root extends React.Component {
 
       determineWhichToRender() {
         const { currentView } = this.state;
-        const { video, videos } = this.state;
+        const { video, videos, users, likes } = this.state;
     
         switch (currentView) {
           case 'Detail':
@@ -193,7 +253,7 @@ export default class Root extends React.Component {
             case 'NewsFeed':
             return <div>
                     <NavBar goToNewsFeed={this.goToNewsFeed} goToVideos={this.goToVideos} goToUsers={this.goToUsers} goToProfile={this.goToProfile} />
-                    <NewsFeed />
+                    <NewsFeed likes={likes} fetchOneVideo={this.fetchOneVideo} />
                   </div>
     
             break;
@@ -201,7 +261,7 @@ export default class Root extends React.Component {
             case 'Users':
             return <div>
                     <NavBar goToNewsFeed={this.goToNewsFeed} goToVideos={this.goToVideos} goToUsers={this.goToUsers} goToProfile={this.goToProfile} />
-                    <Users />
+                    <Users users={users} />
                   </div>
     
             break;
